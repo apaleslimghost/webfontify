@@ -17,6 +17,14 @@ function crayBuffer(buf) {
 	return buf;
 }
 
+function flatTap(fn) {
+	return function(s) {
+		return s.flatMap(function(x) {
+			return fn(x).map(x);
+		});
+	}
+}
+
 module.exports = function(file, opts) {
 	var base = path.basename(file, '.ttf');
 	var options = defaults(opts, defaultOptions);
@@ -24,8 +32,8 @@ module.exports = function(file, opts) {
 	return σ.pipeline(
 		σ.map(ttf2eot),
 		σ.map(crayBuffer),
-		σ.flatMap(function(s) {
-			return mkdirp(options.fontDir, {}).map(s);
+		flatTap(function() {
+			return mkdirp(options.fontDir, {});
 		}),
 		throughWritable(function() {
 			return fs.createWriteStream(path.join(options.fontDir, base + '.eot'))
