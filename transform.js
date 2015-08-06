@@ -1,14 +1,7 @@
 var σ = require('highland');
 var ttf2eot = require('ttf2eot');
 var fs = require('fs');
-
-function writeThrough(w) {
-	return function(s) {
-		var o = σ('finish', w).otherwise([undefined]);
-		s.pipe(w);
-		return o;
-	}
-}
+var throughWritable = require('@quarterto/through-writable');
 
 module.exports = function(file, opts) {
 	return σ.pipeline(
@@ -18,6 +11,6 @@ module.exports = function(file, opts) {
 		σ.map(function(buf) {
 			return new Buffer(ttf2eot(buf).buffer);
 		}),
-		writeThrough(fs.createWriteStream('foo.eot'))
+		throughWritable(fs.createWriteStream('foo.eot'))
 	);
 };

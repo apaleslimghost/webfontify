@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/quarterto/webfontify",
   "dependencies": {
+    "@quarterto/through-writable": "^1.0.0",
     "glob-transform": "^0.1.0",
     "highland": "^2.5.1",
     "minimist": "^1.1.2",
