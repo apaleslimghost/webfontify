@@ -22,18 +22,24 @@ function fontPath(base, dir, ext) {
 	return path.join(dir, base + '.' + ext);
 }
 
+function fontPipeline(ext, convert, options) {
+	return σ.pipeline(
+		σ.map(convert),
+		σ.map(crayBuffer),
+		throughWritable(function() {
+			return fs.createWriteStream(fontPath(options.base, options.fontDir, ext))
+		})
+	);
+}
+
 module.exports = function(file, opts) {
-	var base = path.basename(file, '.ttf');
 	var options = defaults(opts, defaultOptions);
+	options.base = path.basename(file, '.ttf');
 
 	return σ.pipeline(
-		σ.map(ttf2eot),
-		σ.map(crayBuffer),
 		flatTap(function() {
 			return mkdirp(options.fontDir, {});
 		}),
-		throughWritable(function() {
-			return fs.createWriteStream(fontPath(base, options.fontDir, 'eot'))
-		})
+		fontPipeline('eot', ttf2eot, options)
 	);
 };
