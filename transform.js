@@ -1,5 +1,4 @@
 var σ = require('highland');
-var ttf2eot = require('ttf2eot');
 var fs = require('fs');
 var throughWritable = require('@quarterto/through-writable');
 var flatTap = require('@quarterto/flat-tap');
@@ -40,6 +39,6 @@ module.exports = function(file, opts) {
 		flatTap(function() {
 			return mkdirp(options.fontDir, {});
 		}),
-		fontPipeline('eot', ttf2eot, options)
+		fontPipeline('eot', require('ttf2eot'), options)
 	);
 };
