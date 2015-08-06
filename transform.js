@@ -2,6 +2,7 @@ var σ = require('highland');
 var ttf2eot = require('ttf2eot');
 var fs = require('fs');
 var throughWritable = require('@quarterto/through-writable');
+var flatTap = require('@quarterto/flat-tap');
 var path = require('path');
 var defaults = require('defaults');
 var mkdirp = σ.wrapCallback(require('mkdirp'));
@@ -15,14 +16,6 @@ function crayBuffer(buf) {
 		return new Buffer(buf.buffer);
 	}
 	return buf;
-}
-
-function flatTap(fn) {
-	return function(s) {
-		return s.flatMap(function(x) {
-			return fn(x).map(x);
-		});
-	}
 }
 
 module.exports = function(file, opts) {
