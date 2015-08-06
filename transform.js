@@ -18,6 +18,10 @@ function crayBuffer(buf) {
 	return buf;
 }
 
+function fontPath(base, dir, ext) {
+	return path.join(dir, base + '.' + ext);
+}
+
 module.exports = function(file, opts) {
 	var base = path.basename(file, '.ttf');
 	var options = defaults(opts, defaultOptions);
@@ -29,7 +33,7 @@ module.exports = function(file, opts) {
 			return mkdirp(options.fontDir, {});
 		}),
 		throughWritable(function() {
-			return fs.createWriteStream(path.join(options.fontDir, base + '.eot'))
+			return fs.createWriteStream(fontPath(base, options.fontDir, 'eot'))
 		})
 	);
 };
