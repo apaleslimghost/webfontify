@@ -10,17 +10,20 @@ var defaultOptions = {
 	fontDir: 'fonts'
 };
 
+function crayBuffer(buf) {
+	if(buf.buffer) {
+		return new Buffer(buf.buffer);
+	}
+	return buf;
+}
+
 module.exports = function(file, opts) {
 	var base = path.basename(file, '.ttf');
 	var options = defaults(opts, defaultOptions);
 
 	return σ.pipeline(
-		σ.map(function(ttf) {
-			return new Uint8Array(ttf);
-		}),
-		σ.map(function(buf) {
-			return new Buffer(ttf2eot(buf).buffer);
-		}),
+		σ.map(ttf2eot),
+		σ.map(crayBuffer),
 		σ.flatMap(function(s) {
 			return mkdirp(options.fontDir, {}).map(s);
 		}),
