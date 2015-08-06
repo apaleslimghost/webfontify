@@ -31,6 +31,14 @@ function fontPipeline(ext, convert, options) {
 	);
 }
 
+function branch(streams) {
+	return function(input) {
+		return σ(streams).flatMap(function(thru) {
+			return input.fork().pipe(thru);
+		});
+	};
+}
+
 module.exports = function(file, opts) {
 	var options = defaults(opts, defaultOptions);
 	options.base = path.basename(file, '.ttf');
@@ -39,6 +47,11 @@ module.exports = function(file, opts) {
 		flatTap(function() {
 			return mkdirp(options.fontDir, {});
 		}),
-		fontPipeline('eot', require('ttf2eot'), options)
+		σ.collect,
+		σ.map(Buffer.concat),
+		branch([
+			fontPipeline('eot', require('ttf2eot'), options),
+			fontPipeline('svg', require('ttf2svg'), options)
+		])
 	);
 };

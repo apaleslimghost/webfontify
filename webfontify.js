@@ -8,7 +8,6 @@ var transform = require('./transform');
 
 σ(argv._).flatMap(function(f) {
 	return σ(fs.createReadStream(f))
-		.collect().map(Buffer.concat)
 		.through(transform(f, argv))
 		.map(f);
 }).each(console.log.bind(console, 'Processed'));
