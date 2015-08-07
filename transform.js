@@ -51,7 +51,8 @@ module.exports = function(file, opts) {
 		σ.map(Buffer.concat),
 		branch([
 			fontPipeline('eot', require('ttf2eot'), options),
-			fontPipeline('svg', require('ttf2svg'), options)
+			fontPipeline('svg', require('ttf2svg'), options),
+			fontPipeline('woff', require('ttf2woff'), options)
 		])
 	);
 };
