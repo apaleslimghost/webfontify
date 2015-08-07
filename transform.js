@@ -2,6 +2,7 @@ var σ = require('highland');
 var fs = require('fs');
 var throughWritable = require('@quarterto/through-writable');
 var flatTap = require('@quarterto/flat-tap');
+var branch = require('@quarterto/highland-branch');
 var path = require('path');
 var defaults = require('defaults');
 var mkdirp = σ.wrapCallback(require('mkdirp'));
@@ -29,14 +30,6 @@ function fontPipeline(ext, convert, options) {
 			return fs.createWriteStream(fontPath(options.base, options.fontDir, ext))
 		})
 	);
-}
-
-function branch(streams) {
-	return function(input) {
-		return σ(streams.map(function(thru) {
-			return input.fork().through(thru);
-		})).sequence().collect();
-	};
 }
 
 module.exports = function(file, opts) {
