@@ -33,9 +33,9 @@ function fontPipeline(ext, convert, options) {
 
 function branch(streams) {
 	return function(input) {
-		return σ(streams).flatMap(function(thru) {
-			return input.fork().pipe(thru);
-		});
+		return σ(streams.map(function(thru) {
+			return input.fork().through(thru);
+		})).sequence().collect();
 	};
 }
 
