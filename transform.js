@@ -6,6 +6,7 @@ var branch = require('@quarterto/highland-branch');
 var path = require('path');
 var defaults = require('defaults');
 var mkdirp = σ.wrapCallback(require('mkdirp'));
+var ttfName = require('ttfinfo/tableName');
 
 var defaultOptions = {
 	fontDir: 'fonts'
@@ -32,6 +33,8 @@ function fontPipeline(ext, convert, options) {
 	);
 }
 
+var bufferCollect = σ.compose(σ.map(Buffer.concat), σ.collect);
+
 module.exports = function(file, opts) {
 	var options = defaults(opts, defaultOptions);
 	options.base = path.basename(file, '.ttf');
@@ -40,12 +43,16 @@ module.exports = function(file, opts) {
 		flatTap(function() {
 			return mkdirp(options.fontDir, {});
 		}),
-		σ.collect,
-		σ.map(Buffer.concat),
+		bufferCollect,
 		branch([
 			fontPipeline('eot', require('ttf2eot'), options),
 			fontPipeline('svg', require('ttf2svg'), options),
-			fontPipeline('woff', require('ttf2woff'), options)
+			fontPipeline('woff', require('ttf2woff'), options),
+			σ.pipeline(σ.map(function(buf) {
+				var name = ttfName(buf)['1'];
+				console.log(name);
+				return '';
+			}))
 		])
 	);
 };
