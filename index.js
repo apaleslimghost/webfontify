@@ -1,14 +1,12 @@
 var globTransform = require('glob-transform');
 var σ = require('highland');
-
-/*
- * 1. Convert ttf to different formats, output to fonts dir
- * 2. Generate css file, output to css dir
- * 3. Output require statement for css file
- */
+var transform = require('./transform');
 
 module.exports = globTransform('*.ttf', function(file, opts) {
-	return transform(file, opts).map(function() {
-		return 'module.exports = require("' + cssFilename(file, opts) + '");'
-	});
+	return σ.pipeline(
+		transform(file, opts)
+		σ.map(function(cssPath) {
+			return 'module.exports = require("' + cssPath + '");'
+		})
+	);
 });

@@ -113,5 +113,6 @@ module.exports = function(file, opts) {
 				})
 			)
 		])
+		σ.map(getPath(options.base, options.cssDir, 'css'))
 	);
 };
