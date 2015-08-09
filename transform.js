@@ -112,7 +112,7 @@ module.exports = function(file, opts) {
 					return fs.createWriteStream(getPath(options.base, options.cssDir, 'css'))
 				})
 			)
-		])
+		]),
 		σ.map(getPath(options.base, options.cssDir, 'css'))
 	);
 };
