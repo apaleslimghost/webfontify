@@ -4,7 +4,7 @@
   "description": "foo.ttf → @font-face { font-family: 'foo'; }",
   "main": "index.js",
   "scripts": {
-    "test": "make test"
+    "test": "mocha test.js"
   },
   "bin": "./webfontify.js",
   "repository": {
@@ -40,6 +40,7 @@
   },
   "devDependencies": {
     "browserify": "^11.0.1",
-    "cssify": "^0.7.0"
+    "cssify": "^0.7.0",
+    "mocha": "^2.3.0"
   }
 }
