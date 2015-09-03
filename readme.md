@@ -23,7 +23,7 @@ Install locally alongside Browserify and [something](https://www.npmjs.com/packa
 ```js
 var webfontify = require('webfontify/transform');
 
-fs.createReadStream('path/to/font.ttf).pipe(
+fs.createReadStream('path/to/font.ttf').pipe(
 	webfontify('path/to/font.ttf', options)
 );
 ```
