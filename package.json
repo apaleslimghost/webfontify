@@ -3,7 +3,8 @@
   "description": "foo.ttf → @font-face { font-family: 'foo'; }",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test.js",
+    "test": "npm run lint && mocha test.js",
+    "lint": "git ls-files | egrep '\.js$' | xargs eslint --fix",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "bin": "./webfontify.js",
@@ -41,6 +42,8 @@
   "devDependencies": {
     "browserify": "^11.0.1",
     "cssify": "^0.7.0",
+    "eslint": "^2.4.0",
+    "eslint-config-airbnb": "^6.1.0",
     "mocha": "^2.3.0",
     "semantic-release": "^4.3.4"
   }
