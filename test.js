@@ -2,6 +2,7 @@
 
 const browserify = require('browserify');
 const webfontify = require('./');
+const transform = require('./transform');
 const σ = require('highland');
 const fs = require('fs');
 
@@ -50,6 +51,25 @@ describe('Webfontify', () => {
 				.flatMap(σ.wrapCallback(fs.unlink))
 				.stopOnError(done)
 				.done(done);
+		});
+	});
+
+	describe('options', () => {
+		it('shouldn\'t create directories if they\'re falsy', done => {
+			σ([]).pipe(
+				transform('./test/lato.ttf', {fontDir: false, cssDir: false})
+			)
+				.stopOnError(done)
+				.done(() => {
+					σ(['css', 'fonts']).flatMap(exists).toArray(xs => {
+						xs.forEach(console.assert);
+						done();
+					});
+				});
+		});
+
+		it('should create streams to write to', done => {
+			done();
 		});
 	});
 });

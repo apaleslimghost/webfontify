@@ -77,8 +77,8 @@ module.exports = (file, opts) => {
 	options.base = path.basename(file, '.ttf');
 
 	return σ.pipeline(
-		flatTap(() => mkdirp(options.fontDir, {})),
-		flatTap(() => mkdirp(options.cssDir, {})),
+		flatTap(() => options.fontDir ? mkdirp(options.fontDir, {}) : σ([])),
+		flatTap(() => options.cssDir ? mkdirp(options.cssDir, {}) : σ([])),
 		bufferCollect,
 		branch([
 			fontPipeline('eot', require('ttf2eot'), options),
@@ -97,6 +97,6 @@ module.exports = (file, opts) => {
 				throughWritable(() => fs.createWriteStream(getPath(options.base, options.cssDir, 'css')))
 			),
 		]),
-		σ.map(getPath(options.base, options.cssDir, 'css'))
+		σ.map(() => options.cssDir && getPath(options.base, options.cssDir, 'css'))
 	);
 };
