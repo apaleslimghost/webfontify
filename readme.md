@@ -1,7 +1,7 @@
 <h1 align="center">
 	<img src="https://raw.githubusercontent.com/quarterto/webfontify/master/logo.png" width="400" alt="Webfontify"><br>
 
-	<a href="http://badge.fury.io/js/webfontify"><img src="https://badge.fury.io/js/webfontify.svg" alt="npm version" height="18"></a>
+	<a href="http://badge.fury.io/js/webfontify"><img src="https://badge.fury.io/js/webfontify.svg" alt="npm version"></a>
 	<a href="https://travis-ci.org/quarterto/webfontify"><img src="https://travis-ci.org/quarterto/webfontify.svg?branch=develop" alt="Build Status"></a>
 </h1>
 
